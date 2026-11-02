@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <title>GAMEVERSE — Connecting Players Worldwide</title>
+  <style>
+    :root{--bg:#08111f;--panel:#111f33;--panel2:#172943;--line:#29415f;--text:#f4f8ff;--muted:#a8b8ce;--blue:#28b9f5;--cyan:#75e1ff;--danger:#ff7777}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px Arial,sans-serif}
+    button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:11px 15px;background:var(--blue);color:#04111d;font-weight:700}
+    button:disabled{opacity:.55;cursor:not-allowed}.secondary{background:#203653;color:var(--text);border:1px solid var(--line)}.danger{background:#552b38;color:#fff}
+    header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;background:#0d192a;border-bottom:1px solid var(--line)}
+    .brand{font-size:22px;font-weight:900;letter-spacing:1px;color:var(--blue)}.brand span{color:#fff}.header-right{display:flex;align-items:center;gap:10px}
+    .wrap{max-width:1100px;margin:auto;padding:18px}.hero{padding:42px 20px;text-align:center;background:linear-gradient(130deg,#142d4b,#0b1729);border:1px solid var(--line);border-radius:18px;margin:20px auto}
+    .hero h1{font-size:clamp(30px,7vw,54px);margin:0 0 12px}.hero h1 span{color:var(--blue)}.muted{color:var(--muted);line-height:1.5}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px}
+    .panel,.game-card,.stat{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:17px}.game-card{text-align:center;cursor:pointer}.game-card:hover{border-color:var(--blue);transform:translateY(-2px)}
+    .game-icon{font-size:30px;margin-bottom:9px}.section{margin:25px 0}.section h2{font-size:21px;margin:0 0 14px}.hidden{display:none!important}
+    .auth-box{max-width:440px;margin:25px auto}.field{width:100%;padding:13px;margin:7px 0 12px;border-radius:8px;border:1px solid var(--line);background:#091524;color:white}.auth-box button{width:100%;margin-top:8px}
+    .tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 13px}.tabs button{white-space:nowrap}.tabs .active{background:var(--blue);color:#061321}
+    .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.between{justify-content:space-between}.avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#263e5d;border:1px solid var(--line)}.small{font-size:12px;color:var(--muted)}
+    .feed{display:flex;flex-direction:column;gap:9px;max-height:390px;overflow:auto;margin:12px 0}.message{padding:11px;background:#0b192b;border:1px solid #203754;border-radius:9px;overflow-wrap:anywhere}.message strong{color:var(--cyan)}
+    textarea.field{min-height:75px;resize:vertical}.list{display:flex;flex-direction:column;gap:9px}.list-item{padding:12px;background:#0b192b;border:1px solid #203754;border-radius:9px}
+    .notice{padding:12px;border-radius:9px;background:#182b43;color:var(--muted);line-height:1.5}.error{color:var(--danger);margin:10px 0}.success{color:#79e6ae;margin:10px 0}
+    .pill{display:inline-block;padding:5px 9px;border-radius:20px;background:#183c56;color:var(--cyan);font-size:12px}.rank-num{font-size:20px;font-weight:bold;color:var(--cyan);min-width:32px}
+    footer{text-align:center;padding:28px;color:var(--muted);border-top:1px solid var(--line);margin-top:35px}
+    a{color:var(--cyan)}@media(max-width:520px){header{padding:12px}.brand{font-size:18px}.wrap{padding:13px}.hero{padding:32px 15px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">GAME<span>VERSE</span></div>
+  <div class="header-right">
+    <span id="headerUser" class="small"></span>
+    <button id="headerAction">JOIN</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="homeView">
+    <div class="hero">
+      <span class="pill">GLOBAL GAMING COMMUNITY</span>
+      <h1>CONNECT. PLAY. <span>COMPETE.</span></h1>
+      <p class="muted">Connecting Players Worldwide.</p>
+      <button id="homeJoin">ENTER GAMEVERSE</button>
+    </div>
+    <div class="section">
+      <h2>🎮 Explore games</h2>
+      <div class="grid" id="publicGames"></div>
+    </div>
+    <div class="section">
+      <h2>🌍 What you can do</h2>
+      <div class="grid">
+        <div class="stat"><h3>Global Lobby</h3><p class="muted">Meet players and chat with the community.</p></div>
+        <div class="stat"><h3>Game Communities</h3><p class="muted">Join conversations around your favourite games.</p></div>
+        <div class="stat"><h3>Player Rankings</h3><p class="muted">View player profiles and verified ranking data as it becomes available.</p></div>
+        <div class="stat"><h3>GAMEVERSE LIVE</h3><p class="muted">Find gaming streams shared by the community.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="authView" class="panel auth-box hidden">
+    <h2 id="authHeading">Join GAMEVERSE</h2>
+    <p class="muted">Create your gaming identity or sign in.</p>
+    <label id="nameLabel">Gaming username</label>
+    <input id="nameInput" class="field" maxlength="24" placeholder="Choose a username">
+    <label>Email address</label>
+    <input id="emailInput" class="field" type="email" autocomplete="email" placeholder="you@example.com">
+    <label>Password</label>
+    <input id="passwordInput" class="field" type="password" autocomplete="current-password" placeholder="At least 6 characters">
+    <button id="emailAction">CREATE ACCOUNT</button>
+    <button id="googleAction" class="secondary">Continue with Google</button>
+    <p id="authError" class="error" role="alert"></p>
+    <p class="small" id="authSwitch">Already registered? <a href="#" id="switchAuth">Log in</a></p>
+    <button class="secondary" id="backHome">Back to home</button>
+  </section>
+
+  <section id="appView" class="hidden">
+    <div class="panel row between">
+      <div class="row">
+        <img id="topAvatar" class="avatar" alt="Profile picture">
+        <div><h2 id="welcomeName" style="margin:0 0 5px">Player</h2><span class="small">GAMEVERSE PLAYER</span></div>
+      </div>
+      <button class="secondary" id="logoutButton">LOG OUT</button>
+    </div>
+    <nav class="tabs section" aria-label="Main navigation">
+      <button class="active" data-tab="dashboardTab">Dashboard</button>
+      <button data-tab="lobbyTab">Global Lobby</button>
+      <button data-tab="communitiesTab">Communities</button>
+      <button data-tab="rankingsTab">Rankings</button>
+      <button data-tab="liveTab">GAMEVERSE LIVE</button>
+      <button data-tab="missionsTab">Missions & Wallet</button>
+      <button data-tab="profileTab">My Profile</button>
+    </nav>
+
+    <section id="dashboardTab" class="app-tab">
+      <div class="section"><h2>🎮 Your gaming world</h2><div id="dashboardGames" class="grid"></div></div>
+      <div class="grid">
+        <div class="stat"><div class="small">PLAYER</div><h3 id="dashName">—</h3></div>
+        <div class="stat"><div class="small">LOOT COINS</div><h3 id="dashCoins">0</h3><p class="small">Points wallet preview</p></div>
+        <div class="stat"><div class="small">COUNTRY</div><h3 id="dashCountry">Not set</h3></div>
+      </div>
+      <div class="notice section">Welcome to GAMEVERSE. Keep your account safe: never share your password or verification codes. Ranking scores and reward claims will only be enabled after trusted server-side verification is installed.</div>
+    </section>
+
+    <section id="lobbyTab" class="app-tab hidden">
+      <h2>🌍 Global Lobby</h2><p class="muted">Chat with signed-in GAMEVERSE players.</p>
+      <div id="lobbyMessages" class="feed"></div>
+      <textarea id="lobbyInput" class="field" maxlength="500" placeholder="Write a message (max 500 characters)"></textarea>
+      <button id="sendLobby">SEND MESSAGE</button><p id="lobbyStatus" class="small"></p>
+    </section>
+
+    <section id="communitiesTab" class="app-tab hidden">
+      <h2>🎮 Game communities</h2><p class="muted">Choose a game to open its community chat.</p>
+      <div id="communityGames" class="grid section"></div>
+      <div class="panel section">
+        <h3 id="communityHeading">Select a community</h3>
+        <div id="communityMessages" class="feed"></div>
+        <textarea id="communityInput" class="field" maxlength="500" placeholder="Message this community"></textarea>
+        <button id="sendCommunity" disabled>SEND TO COMMUNITY</button>
+        <p id="communityStatus" class="small"></p>
+      </div>
+    </section>
+
+    <section id="rankingsTab" class="app-tab hidden">
+      <h2>🏆 Global player rankings</h2>
+      <p class="muted">Players appear here when verified ranking scores are added by the platform server.</p>
+      <div id="rankingList" class="list section"><div class="notice">No verified rankings yet. Rankings will not be invented or calculated from unverified user input.</div></div>
+    </section>
+
+    <section id="liveTab" class="app-tab hidden">
+      <h2>📺 GAMEVERSE LIVE</h2>
+      <p class="muted">This area can list streams from approved streaming platforms.</p>
+      <div class="panel section">
+        <h3>Watch gaming streams</h3>
+        <p class="muted">Live video hosting is not built into Firebase Authentication. Add a trusted Twitch or YouTube Gaming stream link below to open it on that platform.</p>
+        <input id="streamLink" class="field" type="url" placeholder="https://www.youtube.com/@channel or Twitch channel URL">
+        <button id="openStream">OPEN STREAM</button>
+        <p id="streamStatus" class="small"></p>
+      </div>
+      <div class="notice">Do not enter passwords or private account links here. Public stream links only.</div>
+    </section>
+
+    <section id="missionsTab" class="app-tab hidden">
+      <h2>🎁 Daily missions & wallet</h2>
+      <div class="grid section">
+        <div class="stat"><div class="small">LOOT COINS</div><h2 id="walletCoins">0</h2><p class="small">Display balance only</p></div>
+        <div class="stat"><div class="small">REWARD STATUS</div><h3>Not activated</h3><p class="small">Rewards need server-side checks to prevent cheating.</p></div>
+      </div>
+      <div class="list">
+        <div class="list-item"><strong>🌐 Visit the Global Lobby</strong><p class="muted">Meet other players and take part in the community.</p></div>
+        <div class="list-item"><strong>🎮 Join a game community</strong><p class="muted">Choose a game and join its discussion.</p></div>
+        <div class="list-item"><strong>👤 Complete your player profile</strong><p class="muted">Add a username, country and short bio.</p></div>
+      </div>
+      <p class="notice section">Loot Coins are shown as a planned platform feature. This version does not award coins, promise cash, or support withdrawals. A secure reward system must be built on a trusted backend first.</p>
+    </section>
+
+    <section id="profileTab" class="app-tab hidden">
+      <h2>👤 My player profile</h2>
+      <div class="panel section">
+        <div class="row"><img id="profileAvatar" class="avatar" alt="Profile picture"><div><strong id="profileEmail"></strong><p class="small">Your public player details</p></div></div>
+        <label for="profileName">Gaming username</label><input id="profileName" class="field" maxlength="24">
+        <label for="profileCountry">Country</label><input id="profileCountry" class="field" maxlength="50" placeholder="e.g. Nigeria">
+        <label for="profilePhoto">Profile picture URL (optional)</label><input id="profilePhoto" class="field" type="url" placeholder="https://example.com/photo.jpg">
+        <label for="profileBio">Bio</label><textarea id="profileBio" class="field" maxlength="160" placeholder="Tell the community about your gaming interests"></textarea>
+        <button id="saveProfile">SAVE PROFILE</button><p id="profileStatus" class="small"></p>
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer>GAMEVERSE · Connecting Players Worldwide · © 2026</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, collection, addDoc, query,
+  orderBy, limit, onSnapshot, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDJdEP46gYfSJYgzWntsI0ELvE3SzSpDjw",
+  authDomain: "gameverse-cb2d1.firebaseapp.com",
+  projectId: "gameverse-cb2d1",
+  storageBucket: "gameverse-cb2d1.firebasestorage.app",
+  messagingSenderId: "339522145811",
+  appId: "1:339522145811:web:3fe2e824a4872b828379e6",
+  measurementId: "G-KDFSWKV33Q"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
+const $ = id => document.getElementById(id);
+const games = [
+  {name:"Free Fire",icon:"🔥"},{name:"PUBG Mobile",icon:"🎯"},
+  {name:"Call of Duty",icon:"⚔️"},{name:"Blood Strike",icon:"💥"},{name:"DLS",icon:"⚽"}
+];
+let registerMode = true, selectedCommunity = "", stopLobby = null, stopCommunity = null, currentProfile = {};
+
+function showView(id){
+  ["homeView","authView","appView"].forEach(v => $(v).classList.add("hidden"));
+  $(id).classList.remove("hidden");
+}
+function safeText(value){return String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function makeGameCards(target){
+  $(target).innerHTML = games.map(g=>`<button class="game-card" data-game="${safeText(g.name)}"><div class="game-icon">${g.icon}</div><strong>${safeText(g.name)}</strong><p class="small">Open community</p></button>`).join("");
+  $(target).querySelectorAll("[data-game]").forEach(b=>b.addEventListener("click",()=>selectCommunity(b.dataset.game)));
+}
+makeGameCards("publicGames"); makeGameCards("dashboardGames"); makeGameCards("communityGames");
+
+function setAuthMode(register){
+  registerMode=register;
+  $("authHeading").textContent=register?"Join GAMEVERSE":"Login to GAMEVERSE";
+  $("nameLabel").classList.toggle("hidden",!register);
+  $("nameInput").classList.toggle("hidden",!register);
+  $("emailAction").textContent=register?"CREATE ACCOUNT":"LOGIN";
+  $("authSwitch").innerHTML=register?'Already registered? <a href="#" id="switchAuth">Log in</a>':'New to GAMEVERSE? <a href="#" id="switchAuth">Create account</a>';
+  $("switchAuth").addEventListener("click",e=>{e.preventDefault();setAuthMode(!register);});
+  $("authError").textContent="";
+}
+function openAuth(){showView("authView");}
+$("homeJoin").onclick=openAuth;$("headerAction").onclick=()=>auth.currentUser?showView("appView"):openAuth();
+$("backHome").onclick=()=>showView("homeView");
+setAuthMode(true);
+
+$("emailAction").onclick=async()=>{
+  const email=$("emailInput").value.trim(), password=$("passwordInput").value, name=$("nameInput").value.trim();
+  $("authError").textContent="";
+  if(!email||!password||(registerMode&&!name)){ $("authError").textContent="Complete all required fields.";return; }
+  if(password.length<6){$("authError").textContent="Password must contain at least 6 characters.";return;}
+  $("emailAction").disabled=true;
+  try{
+    if(registerMode){
+      const cred=await createUserWithEmailAndPassword(auth,email,password);
+      await updateProfile(cred.user,{displayName:name});
+      await createOrLoadProfile(cred.user,name);
+    }else{await signInWithEmailAndPassword(auth,email,password);}
+  }catch(e){$("authError").textContent=authMessage(e);}
+  finally{$("emailAction").disabled=false;}
+};
+$("googleAction").onclick=async()=>{
+  $("authError").textContent="";
+  try{await signInWithPopup(auth,googleProvider);}
+  catch(e){$("authError").textContent=authMessage(e);}
+};
+function authMessage(e){
+  const messages={
+    "auth/unauthorized-domain":"This website domain is not authorised in Firebase Authentication settings.",
+    "auth/popup-closed-by-user":"The Google sign-in window was closed before finishing.",
+    "auth/popup-blocked":"Your browser blocked the sign-in window. Allow pop-ups and try again.",
+    "auth/email-already-in-use":"An account already uses this email. Try logging in.",
+    "auth/invalid-credential":"Email or password is incorrect.",
+    "auth/weak-password":"Choose a stronger password with at least 6 characters."
+  };
+  return messages[e.code]||e.message||"Something went wrong.";
+}
+async function createOrLoadProfile(user,preferredName=""){
+  const ref=doc(db,"profiles",user.uid), snap=await getDoc(ref);
+  if(!snap.exists()){
+    currentProfile={displayName:preferredName||user.displayName||"Player",photoURL:user.photoURL||"",country:"",bio:"",xp:0,coins:0,createdAt:serverTimestamp()};
+    await setDoc(ref,currentProfile);
+  }else currentProfile=snap.data();
+  return currentProfile;
+}
+function avatarFallback(name){return "https://ui-avatars.com/api/?name="+encodeURIComponent(name||"Player")+"&background=193653&color=ffffff";}
+function setAvatar(img,url,name){img.src=url||avatarFallback(name);img.onerror=()=>{img.onerror=null;img.src=avatarFallback(name);};}
+async function loadProfile(user){
+  try{
+    const p=await createOrLoadProfile(user);
+    const name=p.displayName||user.displayName||"Player";
+    $("welcomeName").textContent="Welcome, "+name;$("dashName").textContent=name;
+    $("headerUser").textContent=name;$("headerAction").textContent="MY GAMEVERSE";
+    $("dashCountry").textContent=p.country||"Not set";
+    $("dashCoins").textContent=Number(p.coins||0);$("walletCoins").textContent=Number(p.coins||0);
+    $("profileEmail").textContent=user.email||"";
+    $("profileName").value=p.displayName||name;$("profileCountry").value=p.country||"";
+    $("profilePhoto").value=p.photoURL||"";$("profileBio").value=p.bio||"";
+    setAvatar($("topAvatar"),p.photoURL,name);setAvatar($("profileAvatar"),p.photoURL,name);
+    listenLobby();listenRankings();
+  }catch(e){showStatus("profileStatus","Could not load profile. Check that Firestore is enabled and its rules are published.",true);}
+}
+onAuthStateChanged(auth,async user=>{
+  if(user){showView("appView");await loadProfile(user);}
+  else{
+    showView("homeView");$("headerUser").textContent="";$("headerAction").textContent="JOIN";
+    if(stopLobby){stopLobby();stopLobby=null;}if(stopCommunity){stopCommunity();stopCommunity=null;}
+  }
+});
+$("logoutButton").onclick=()=>signOut(auth);
+
+document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b===btn));
+  document.querySelectorAll(".app-tab").forEach(t=>t.classList.add("hidden"));
+  $(btn.dataset.tab).classList.remove("hidden");
+}));
+function showStatus(id,msg,isError=false){$(id).textContent=msg;$(id).style.color=isError?"#ff7777":"#79e6ae";}
+$("saveProfile").onclick=async()=>{
+  const user=auth.currentUser;if(!user)return;
+  const displayName=$("profileName").value.trim(),country=$("profileCountry").value.trim(),photoURL=$("profilePhoto").value.trim(),bio=$("profileBio").value.trim();
+  if(displayName.length<2){showStatus("profileStatus","Username must contain at least 2 characters.",true);return;}
+  if(photoURL&&!/^https:\/\/.+/i.test(photoURL)){showStatus("profileStatus","Use a secure https image URL, or leave it blank.",true);return;}
+  $("saveProfile").disabled=true;
+  try{
+    await setDoc(doc(db,"profiles",user.uid),{displayName,country,photoURL,bio,updatedAt:serverTimestamp()},{merge:true});
+    await updateProfile(user,{displayName,photoURL:photoURL||null});
+    currentProfile={...currentProfile,displayName,country,photoURL,bio};
+    $("welcomeName").textContent="Welcome, "+displayName;$("dashName").textContent=displayName;
+    $("dashCountry").textContent=country||"Not set";$("headerUser").textContent=displayName;
+    setAvatar($("topAvatar"),photoURL,displayName);setAvatar($("profileAvatar"),photoURL,displayName);
+    showStatus("profileStatus","Profile saved successfully.");
+  }catch(e){showStatus("profileStatus",authMessage(e),true);}
+  finally{$("saveProfile").disabled=false;}
+};
+
+function listenLobby(){
+  if(stopLobby)stopLobby();
+  const q=query(collection(db,"lobbyMessages"),orderBy("createdAt","desc"),limit(40));
+  stopLobby=onSnapshot(q,snap=>renderMessages("lobbyMessages",snap.docs.reverse()),e=>showStatus("lobbyStatus","Chat unavailable: "+e.message,true));
+}
+function listenCommunity(game){
+  if(stopCommunity)stopCommunity();
+  const q=query(collection(db,"communities",game,"messages"),orderBy("createdAt","desc"),limit(40));
+  stopCommunity=onSnapshot(q,snap=>renderMessages("communityMessages",snap.docs.reverse()),e=>showStatus("communityStatus","Community unavailable: "+e.message,true));
+}
+function renderMessages(target,docs){
+  const box=$(target);
+  if(!docs.length){box.innerHTML='<div class="notice">No messages yet. Start the conversation respectfully.</div>';return;}
+  box.innerHTML=docs.map(d=>{
+    const m=d.data(),date=m.createdAt?.toDate?m.createdAt.toDate().toLocaleString():"just now";
+    return `<div class="message"><strong>${safeText(m.displayName||"Player")}</strong><div>${safeText(m.text||"")}</div><span class="small">${safeText(date)}</span></div>`;
+  }).join("");
+  box.scrollTop=box.scrollHeight;
+}
+async function sendMessage(path,inputId,statusId){
+  const user=auth.currentUser,text=$(inputId).value.trim();if(!user||!text)return;
+  if(text.length>500){showStatus(statusId,"Message is too long.",true);return;}
+  try{
+    await addDoc(path,{uid:user.uid,displayName:currentProfile.displayName||user.displayName||"Player",text,createdAt:serverTimestamp()});
+    $(inputId).value="";showStatus(statusId,"Message sent.");
+  }catch(e){showStatus(statusId,"Could not send message: "+e.message,true);}
+}
+$("sendLobby").onclick=()=>sendMessage(collection(db,"lobbyMessages"),"lobbyInput","lobbyStatus");
+function selectCommunity(game){
+  if(!auth.currentUser){openAuth();return;}
+  selectedCommunity=game;$("communityHeading").textContent="🌍 "+game+" Community";
+  $("sendCommunity").disabled=false;listenCommunity(game);
+  document.querySelector('[data-tab="communitiesTab"]').click();
+}
+$("sendCommunity").onclick=()=>{
+  if(!selectedCommunity)return;
+  sendMessage(collection(db,"communities",selectedCommunity,"messages"),"communityInput","communityStatus");
+};
+async function listenRankings(){
+  try{
+    const q=query(collection(db,"profiles"),orderBy("xp","desc"),limit(20));
+    onSnapshot(q,snap=>{
+      const list=$("rankingList");
+      if(snap.empty){list.innerHTML='<div class="notice">No player profiles yet.</div>';return;}
+      list.innerHTML=snap.docs.map((d,i)=>{
+        const p=d.data();return `<div class="list-item row"><span class="rank-num">#${i+1}</span><div><strong>${safeText(p.displayName||"Player")}</strong><div class="small">${safeText(p.country||"Country not set")}</div></div><span class="pill" style="margin-left:auto">${Number(p.xp||0)} XP</span></div>`;
+      }).join("");
+    },()=>{$("rankingList").innerHTML='<div class="notice">Rankings are waiting for verified server-side scores.</div>';});
+  }catch(e){$("rankingList").innerHTML='<div class="notice">Rankings are not available yet.</div>';}
+}
+$("openStream").onclick=()=>{
+  const link=$("streamLink").value.trim();
+  try{
+    const u=new URL(link);
+    if(u.protocol!=="https:"||!["youtube.com","www.youtube.com","m.youtube.com","twitch.tv","www.twitch.tv","gaming.youtube.com"].includes(u.hostname)){
+      showStatus("streamStatus","Enter a public YouTube or Twitch link using https.",true);return;
+    }
+    window.open(u.href,"_blank","noopener,noreferrer");showStatus("streamStatus","Opening the public stream in a new tab.");
+  }catch{showStatus("streamStatus","Enter a valid public stream URL.",true);}
+};
+</script>
+</body>
+</html>
