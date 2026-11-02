@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMEVERSE | Connecting Players Worldwide</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #080d18;
+    color: white;
+}
+
+header {
+    padding: 20px;
+    background: #101a2c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #263751;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #35c7ff;
+}
+
+.logo span {
+    color: white;
+}
+
+.hero {
+    text-align: center;
+    padding: 65px 20px;
+    background: linear-gradient(135deg,#101d35,#07101f);
+}
+
+.hero h1 {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.hero h1 span {
+    color: #35c7ff;
+}
+
+.hero p {
+    color: #a9b7ce;
+    margin-bottom: 25px;
+}
+
+button {
+    background: #159fe0;
+    color: white;
+    border: none;
+    padding: 13px 24px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #087bb7;
+}
+
+section {
+    padding: 30px 20px;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    font-size: 23px;
+}
+
+.games {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(145px,1fr));
+    gap: 15px;
+}
+
+.game {
+    background: #142239;
+    padding: 25px 12px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #263b5b;
+    cursor: pointer;
+}
+
+.game:hover {
+    border-color: #35c7ff;
+    transform: translateY(-3px);
+}
+
+.game .icon {
+    font-size: 35px;
+    margin-bottom: 12px;
+}
+
+.game p {
+    color: #9caec7;
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 15px;
+}
+
+.feature {
+    background: #142239;
+    padding: 22px;
+    border-radius: 10px;
+}
+
+.feature p {
+    color: #9caec7;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#login {
+    display: none;
+    max-width: 420px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #142239;
+    border-radius: 15px;
+}
+
+#login input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    background: #080d18;
+    color: white;
+    border: 1px solid #344763;
+    border-radius: 7px;
+}
+
+#dashboard {
+    display: none;
+    padding: 25px;
+}
+
+.rank {
+    background: #142239;
+    padding: 16px;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #8495ae;
+    background: #101a2c;
+    margin-top: 30px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">GAME<span>VERSE</span></div>
+    <button onclick="showLogin()">JOIN NOW</button>
+</header>
+
+<div id="home">
+
+<div class="hero">
+    <h1>WELCOME TO <span>GAMEVERSE</span></h1>
+    <p>Connecting Players Worldwide.</p>
+    <button onclick="showLogin()">ENTER GAMEVERSE</button>
+</div>
+
+<section>
+    <h2 class="section-title">🎮 EXPLORE GAMES</h2>
+
+    <div class="games">
+        <div class="game" onclick="selectGame('Free Fire')">
+            <div class="icon">🔥</div>
+            <h3>Free Fire</h3>
+            <p>Join the community</p>
+        </div>
+
+        <div class="game" onclick="selectGame('PUBG Mobile')">
+            <div class="icon">🎯</div>
+            <h3>PUBG Mobile</h3>
+            <p>Join the community</p>
+        </div>
+
+        <div class="game" onclick="selectGame('Call of Duty')">
+            <div class="icon">⚔️</div>
+            <h3>Call of Duty</h3>
+            <p>Join the community</p>
+        </div>
+
+        <div class="game" onclick="selectGame('Blood Strike')">
+            <div class="icon">💥</div>
+            <h3>Blood Strike</h3>
+            <p>Join the community</p>
+        </div>
+
+        <div class="game" onclick="selectGame('DLS')">
+            <div class="icon">⚽</div>
+            <h3>DLS</h3>
+            <p>Join the community</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">🌍 WHY GAMEVERSE?</h2>
+
+    <div class="features">
+        <div class="feature">
+            <h3>🌐 Global Community</h3>
+            <p>Connect with gamers from different countries.</p>
+        </div>
+
+        <div class="feature">
+            <h3>🏆 Global Rankings</h3>
+            <p>Discover top players and gaming champions.</p>
+        </div>
+
+        <div class="feature">
+            <h3>📺 GAMEVERSE LIVE</h3>
+            <p>Watch gaming streams and connect with viewers.</p>
+        </div>
+
+        <div class="feature">
+            <h3>🎁 Daily Missions</h3>
+            <p>Complete missions and earn Loot Coins.</p>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<div id="login">
+    <h2>JOIN GAMEVERSE</h2>
+    <p style="color:#9caec7;margin:12px 0">
+        Create your gaming identity.
+    </p>
+
+    <input id="username" type="text" placeholder="Gaming username">
+    <input id="email" type="email" placeholder="Email address">
+    <input id="password" type="password" placeholder="Password">
+
+    <button style="width:100%;margin-top:12px" onclick="enterGameverse()">
+        CREATE ACCOUNT
+    </button>
+
+    <p style="margin-top:20px;color:#9caec7;font-size:13px">
+        Authentication will be connected through Firebase.
+    </p>
+
+    <p style="margin-top:15px;cursor:pointer;color:#35c7ff"
+       onclick="goHome()">← Back to home</p>
+</div>
+
+<div id="dashboard">
+    <h2>WELCOME TO GAMEVERSE 🎮</h2>
+    <p id="welcome" style="margin:15px 0;color:#35c7ff"></p>
+
+    <section>
+        <h2 class="section-title">YOUR GAMING WORLD</h2>
+        <div class="games">
+            <div class="game">🔥<h3>Communities</h3></div>
+            <div class="game">🏆<h3>Rankings</h3></div>
+            <div class="game">📺<h3>Live Gaming</h3></div>
+            <div class="game">🎁<h3>Daily Missions</h3></div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">GLOBAL RANKINGS</h2>
+        <div class="rank">🥇 Top Player — Coming Soon</div>
+        <div class="rank">🥈 Second Player — Coming Soon</div>
+        <div class="rank">🥉 Third Player — Coming Soon</div>
+    </section>
+
+    <button onclick="goHome()">LOG OUT</button>
+</div>
+
+<footer>
+    <h3>GAMEVERSE</h3>
+    <p>Connecting Players Worldwide 🌍</p>
+    <p style="margin-top:10px">© 2026 GAMEVERSE</p>
+</footer>
+
+<script>
+function showLogin() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("login").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
+}
+
+function goHome() {
+    document.getElementById("home").style.display = "block";
+    document.getElementById("login").style.display = "none";
+    document.getElementById("dashboard").style.display = "none";
+}
+
+function enterGameverse() {
+    const name = document.getElementById("username").value.trim();
+
+    if (!name) {
+        alert("Please enter your gaming username.");
+        return;
+    }
+
+    alert("This is the initial interface. Firebase authentication is not connected yet.");
+}
+
+function selectGame(game) {
+    alert(game + " community will be connected soon!");
+}
+</script>
+
+</body>
+  </html>
